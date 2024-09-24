@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Horloge Digitale et Formulaire</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Gestionnaire des tâches hebdomadaire</h1>
+        <div id="clock" class="clock"></div>
+        <button id="toggleForm">Afficher le Formulaire</button>
+        
+        <div id="formContainer" class="form-container" style="display: none;">
+            <h2>Ajouter un Rappel</h2>
+            <form id="reminderForm">
+                <label>
+                    <input type="checkbox" name="reminder"> Rappel
+                </label>
+                <label>
+                    Heure (0-23):
+                    <input type="number" name="hour" min="0" max="23" required>
+                </label>
+                <label>
+                    Minute (0-59):
+                    <input type="number" name="minute" min="0" max="59" required>
+                </label>
+                <label>
+                    Note:
+                    <input type="text" name="note" required>
+                </label>
+                <button type="submit" class="submit-button">Ajouter le Rappel</button> <!-- Submit button -->
+                <button type="button" class="delete-button">Supprimer</button>
+            </form>
+        </div>
+
+        <!-- List of tasks -->
+        <h2>Liste des Rappels</h2>
+        <ul id="taskList"></ul> <!-- Empty list to display tasks -->
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
