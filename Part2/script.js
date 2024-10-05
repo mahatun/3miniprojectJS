@@ -1,11 +1,47 @@
+// Function to update the clock and check reminders
 function updateClock() {
     const now = new Date();
     const hours = String(now.getHours()).padStart(2, '0');
     const minutes = String(now.getMinutes()).padStart(2, '0');
     const seconds = String(now.getSeconds()).padStart(2, '0');
     document.getElementById('clock').textContent = `${hours}:${minutes}:${seconds}`;
+
+    checkReminders(hours, minutes);  // Check reminders every second
 }
 
+// Check if any reminder matches the current time
+function checkReminders(currentHour, currentMinute) {
+    const tasks = document.querySelectorAll('#taskList li'); // Get all task items
+    tasks.forEach(task => {
+        const taskText = task.textContent;
+        const taskTimeMatch = taskText.match(/Rappel à (\d{2}):(\d{2})/); // Extract the time from the text
+        
+        if (taskTimeMatch) {
+            const taskHour = taskTimeMatch[1];
+            const taskMinute = taskTimeMatch[2];
+
+            // Check if the task's time matches the current time
+            if (taskHour === currentHour && taskMinute === currentMinute && !task.classList.contains('alerted')) {
+                task.classList.add('alerted'); // Add a flag so we don't alert multiple times
+                alertTask(task);  // Show an alert and mark as done when confirmed
+            }
+        }
+    });
+}
+
+// Show an alert and mark the task as done after pressing "OK"
+function alertTask(task) {
+    const checkbox = task.querySelector('.task-checkbox');
+    
+    // Trigger alert
+    alert(`It's time for your task: ${task.textContent}`);
+
+    // Automatically check the checkbox and mark the task as done
+    checkbox.checked = true;
+    task.style.textDecoration = 'line-through'; // Mark as done visually
+}
+
+// Handle form toggle
 document.getElementById('toggleForm').addEventListener('click', () => {
     const formContainer = document.getElementById('formContainer');
     formContainer.style.display = formContainer.style.display === 'none' ? 'block' : 'none';
@@ -15,8 +51,8 @@ document.getElementById('toggleForm').addEventListener('click', () => {
 document.getElementById('reminderForm').addEventListener('submit', (event) => {
     event.preventDefault(); // Prevent default form submission
 
-    const hour = event.target.hour.value;
-    const minute = event.target.minute.value;
+    const hour = event.target.hour.value.padStart(2, '0');
+    const minute = event.target.minute.value.padStart(2, '0');
     const note = event.target.note.value;
 
     // Create a new list item for the task
@@ -58,5 +94,6 @@ document.querySelector('.delete-button').addEventListener('click', () => {
     formContainer.style.display = 'none'; // Cache le formulaire
 });
 
+// Run clock update every second
 setInterval(updateClock, 1000);
-updateClock(); // Appel initial pour afficher l'heure tout de suite
+updateClock(); // Initial call to display the time right away
