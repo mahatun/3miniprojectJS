@@ -29,16 +29,17 @@ function checkReminders(currentHour, currentMinute) {
     });
 }
 
-// Show an alert and mark the task as done after pressing "OK"
+
 function alertTask(task) {
     const checkbox = task.querySelector('.task-checkbox');
-    
-    // Trigger alert
-    alert(`It's time for your task: ${task.textContent}`);
-
-    // Automatically check the checkbox and mark the task as done
+    const audio = document.getElementById('reminderSound');
+    audio.play().catch(error => {
+        console.error("Audio playback failed:", error);
+    });
+    alert(`It's time for your task: ${task.textContent}`);   
     checkbox.checked = true;
-    task.style.textDecoration = 'line-through'; // Mark as done visually
+    audio.pause();  
+    task.style.textDecoration = 'line-through'; 
 }
 
 // Handle form toggle
@@ -86,7 +87,6 @@ document.getElementById('reminderForm').addEventListener('submit', (event) => {
     event.target.reset();
 });
 
-// Supprimer la ligne du formulaire du rappel
 document.querySelector('.delete-button').addEventListener('click', () => {
     const form = document.getElementById('reminderForm');
     form.reset(); // Réinitialise les champs du formulaire
@@ -94,6 +94,5 @@ document.querySelector('.delete-button').addEventListener('click', () => {
     formContainer.style.display = 'none'; // Cache le formulaire
 });
 
-// Run clock update every second
 setInterval(updateClock, 1000);
 updateClock(); // Initial call to display the time right away
